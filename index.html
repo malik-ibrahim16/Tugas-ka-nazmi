@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC STORE - Toko Komputer & Gadget</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F5F5F5;
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        #sidebarOverlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div onclick="navigateTo('home')" class="flex items-center space-x-2 font-extrabold text-xl tracking-wider text-black cursor-pointer">
+                <span class="border-2 border-black px-1.5 py-0.5 rounded-md bg-black text-white">PC</span>
+                <span>STORE</span>
+            </div>
+
+            <nav class="hidden md:flex space-x-8 text-gray-600 font-medium">
+                <button onclick="navigateTo('desktop')" class="nav-link hover:text-red-600 transition">PC Desktop</button>
+                <button onclick="navigateTo('laptop')" class="nav-link hover:text-red-600 transition">Laptop</button>
+                <button onclick="navigateTo('hp')" class="nav-link hover:text-red-600 transition">Hp & Tablet</button>
+                <button onclick="navigateTo('aksesoris')" class="nav-link hover:text-red-600 transition">Aksesoris</button>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" id="desktopSearch" oninput="handleSearch(this.value)" placeholder="Cari Produk..." class="bg-gray-100 text-sm rounded-full pl-4 pr-10 py-2 w-48 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400 text-sm"></i>
+                </div>
+
+                <button id="menuBtn" onclick="openSidebar()" class="flex flex-col space-y-1.5 justify-center items-end group cursor-pointer p-1">
+                    <span class="w-8 h-1 bg-red-600 rounded transition-all"></span>
+                    <span class="w-8 h-1 bg-red-600 rounded transition-all"></span>
+                    <span class="w-8 h-1 bg-red-600 rounded transition-all"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/40 z-40 opacity-0 pointer-events-none"></div>
+
+    <div id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white z-50 shadow-2xl transform translate-x-full flex flex-col">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+            <div onclick="navigateTo('home'); closeSidebar()" class="flex items-center space-x-2 font-extrabold text-lg tracking-wider text-black cursor-pointer">
+                <span class="border-2 border-black px-1.5 py-0.5 rounded-md bg-black text-white text-sm">PC</span>
+                <span>STORE</span>
+            </div>
+            <button onclick="closeSidebar()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-red-100 transition cursor-pointer">
+                <i class="fa-solid fa-xmark text-gray-600"></i>
+            </button>
+        </div>
+
+        <div class="px-6 py-4 border-b border-gray-100 sm:hidden">
+            <div class="relative">
+                <input type="text" id="mobileSearch" oninput="handleSearch(this.value)" placeholder="Cari Produk..." class="bg-gray-100 text-sm rounded-full pl-4 pr-10 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400 text-sm"></i>
+            </div>
+        </div>
+
+        <div class="px-6 py-4 border-b border-gray-100">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Kategori</p>
+            <ul class="space-y-1">
+                <li>
+                    <button onclick="navigateTo('desktop'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-desktop w-4 text-red-400"></i> PC Desktop
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigateTo('laptop'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-laptop w-4 text-red-400"></i> Laptop
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigateTo('hp'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-mobile-screen w-4 text-red-400"></i> HP & Tablet
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigateTo('aksesoris'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-headphones w-4 text-red-400"></i> Aksesoris
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="px-6 py-4 border-b border-gray-100">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Akun</p>
+            <ul class="space-y-1">
+                <li>
+                    <button onclick="navigateTo('profil'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-user w-4 text-red-400"></i> Profil Saya
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigateTo('pesanan'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-bag-shopping w-4 text-red-400"></i> Pesanan Saya
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigateTo('wishlist'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-heart w-4 text-red-400"></i> Wishlist
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="px-6 py-4">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Pengaturan</p>
+            <ul class="space-y-1">
+                <li>
+                    <button onclick="navigateTo('pengaturan'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-gear w-4 text-red-400"></i> Pengaturan
+                    </button>
+                </li>
+                <li>
+                    <button onclick="navigateTo('bantuan'); closeSidebar()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-circle-question w-4 text-red-400"></i> Bantuan
+                    </button>
+                </li>
+                <li>
+                    <button onclick="alert('Berhasil keluar akun!')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                        <i class="fa-solid fa-right-from-bracket w-4 text-red-400"></i> Keluar
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-auto px-6 py-4 bg-gray-50 border-t border-gray-100">
+            <p class="text-[11px] text-gray-400 text-center">© 2024 PC STORE · Garansi Resmi 1 Tahun</p>
+        </div>
+    </div>
+
+    <main id="mainContent" class="flex-grow">
+        <div id="page-home">
+            <section class="bg-[#E52521] text-white relative overflow-hidden py-16 md:py-24">
+                <div class="absolute right-[-10%] bottom-[-20%] w-96 h-96 bg-red-500 rounded-full opacity-20 pointer-events-none"></div>
+                <div class="absolute right-[5%] top-[10%] w-80 h-80 bg-red-500 rounded-full opacity-10 pointer-events-none"></div>
+
+                <div class="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="bg-black/30 text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide">
+                            Garansi Resmi 1 Tahun
+                        </span>
+                        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-6 leading-tight">
+                            PC & LAPTOP <br> TERBAIK <br> HARGA MURAH
+                        </h1>
+                        <p class="text-red-100 text-sm mt-4 max-w-md leading-relaxed opacity-90">
+                            Jangan takut, Jangan khawatir beli di kami di jamin JOSS JISS, dan juga kami mempunyai garansi yang cukup lama... jadi jangan khawatir
+                        </p>
+                        <button onclick="navigateTo('desktop')" class="inline-flex items-center bg-white text-red-600 font-bold text-sm px-6 py-3 rounded-full mt-8 shadow-lg hover:bg-gray-100 transition group">
+                            Lihat produk
+                            <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <div class="grid grid-cols-3 gap-4 border-t border-white/20 mt-12 pt-6 text-center md:text-left">
+                            <div>
+                                <div class="text-2xl md:text-3xl font-extrabold">1.000+</div>
+                                <div class="text-xs text-red-200 mt-1">Produk Tersedia</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl md:text-3xl font-extrabold">19.000+</div>
+                                <div class="text-xs text-red-200 mt-1">Pembeli</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl md:text-3xl font-extrabold">1 Tahun</div>
+                                <div class="text-xs text-red-200 mt-1">Garansi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block"></div>
+                </div>
+            </section>
+
+            <section class="bg-[#F5F5F5] py-12 text-center relative overflow-hidden">
+                <div class="absolute left-[-50px] top-1/2 -translate-y-1/2 w-24 h-24 border-4 border-red-200 rounded-full opacity-40"></div>
+                <div class="absolute right-[-50px] top-1/2 -translate-y-1/2 w-24 h-24 border-4 border-red-200 rounded-full opacity-40"></div>
+
+                <div class="container mx-auto px-6">
+                    <h2 class="text-2xl md:text-3xl font-bold">Trusted <span class="text-red-600">Brands</span></h2>
+                    <div class="flex flex-wrap justify-center items-center gap-6 md:gap-8 mt-6 text-gray-500 font-medium text-sm md:text-base">
+                        <span>Lenovo</span>
+                        <span>Acer</span>
+                        <span>Advan</span>
+                        <span>HP</span>
+                        <span>Apple</span>
+                        <span>Itel</span>
+                        <span>Infinix</span>
+                        <span>Tecno</span>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-gray-200">
+
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-10">Kenapa Harus Beli di sini?</h2>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-[#F5F5F5] h-32 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center p-4 gap-2">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-shield-halved text-red-600 text-lg"></i>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800">Garansi Resmi 1 Tahun</p>
+                            <p class="text-[11px] text-gray-400 leading-tight">Semua produk bergaransi resmi & mudah diklaim</p>
+                        </div>
+
+                        <div class="bg-[#F5F5F5] h-32 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center p-4 gap-2">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-tag text-red-600 text-lg"></i>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800">Harga Paling Murah</p>
+                            <p class="text-[11px] text-gray-400 leading-tight">Harga kompetitif, lebih murah dari toko sebelah</p>
+                        </div>
+
+                        <div class="bg-[#F5F5F5] h-32 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center p-4 gap-2">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-box-open text-red-600 text-lg"></i>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800">Produk 100% Original</p>
+                            <p class="text-[11px] text-gray-400 leading-tight">Barang original langsung dari distributor resmi</p>
+                        </div>
+
+                        <div class="bg-[#F5F5F5] h-32 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center p-4 gap-2">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-headset text-red-600 text-lg"></i>
+                            </div>
+                            <p class="text-sm font-semibold text-gray-800">CS Siap Membantu</p>
+                            <p class="text-[11px] text-gray-400 leading-tight">Customer service responsif & ramah setiap hari</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-[#F5F5F5] relative overflow-hidden">
+                <div class="absolute left-4 bottom-4 w-12 h-12 border-4 border-dashed border-red-200 rounded-full opacity-50"></div>
+                <div class="absolute right-4 bottom-4 w-12 h-12 border-4 border-dashed border-red-200 rounded-full opacity-50"></div>
+
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-10">Testimoni</h2>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-40 text-left relative">
+                            <div class="text-yellow-400 space-x-0.5 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 italic mt-2 flex-grow">"Pelayanan sangat cepat dan barang original!"</p>
+                            <div class="text-right text-[10px] font-bold text-gray-400 mt-4">- Elon Musk</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-40 text-left">
+                            <div class="text-yellow-400 space-x-0.5 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 italic mt-2 flex-grow">"Harga paling murah dibanding toko sebelah."</p>
+                            <div class="text-right text-[10px] font-bold text-gray-400 mt-4">- Elon Musk</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-40 text-left">
+                            <div class="text-yellow-400 space-x-0.5 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 italic mt-2 flex-grow">"Garansi resmi 1 tahun aman klaimnya gampang."</p>
+                            <div class="text-right text-[10px] font-bold text-gray-400 mt-4">- Elon Musk</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-40 text-left">
+                            <div class="text-yellow-400 space-x-0.5 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 italic mt-2 flex-grow">"Sangat direkomendasikan untuk beli di sini."</p>
+                            <div class="text-right text-[10px] font-bold text-gray-400 mt-4">- Elon Musk</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-[#E52521] text-white py-16">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl font-bold mb-8">Produk Terlaris</h2>
+
+                    <div class="relative flex flex-col lg:flex-row gap-6 items-stretch group">
+                        
+                        <div class="bg-gradient-to-b from-amber-400 to-amber-600 rounded-3xl p-6 flex flex-col justify-between text-center shadow-lg min-h-[380px] w-full lg:w-[280px] flex-shrink-0 z-20">
+                            <div>
+                                <h3 class="text-2xl font-black italic tracking-wide text-red-700">PROMO JOSS</h3>
+                                <p class="text-xs uppercase bg-black/10 inline-block px-2 py-1 rounded mt-1 font-semibold text-white">Pilihan Terbaik, Harga Terbaik!</p>
+                            </div>
+                            <div class="my-4">
+                                <span class="text-4xl font-extrabold text-white">30% OFF</span>
+                            </div>
+                            <div class="text-sm bg-black/20 py-2 rounded-xl text-white font-medium">Gadget & Laptop</div>
+                            <button onclick="navigateTo('laptop')" class="bg-white text-amber-600 font-bold text-xs py-2.5 rounded-full mt-4 shadow uppercase hover:bg-red-50 transition">Beli Sekarang ></button>
+                        </div>
+
+                        <div class="relative flex items-center flex-grow overflow-hidden">
+                            <button id="slideLeft" onclick="scrollProduk('left')" class="absolute left-2 z-30 bg-white text-gray-800 w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition cursor-pointer">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+
+                            <div id="produkContainer" class="flex overflow-x-auto gap-6 w-full px-2 py-1 scroll-smooth no-scrollbar snap-x snap-mandatory">
+                                
+                                <div class="bg-white text-gray-800 rounded-3xl p-4 flex flex-col justify-between shadow-md text-center min-h-[380px] w-full sm:w-[calc(50%-12px)] md:w-[240px] flex-shrink-0 snap-start">
+                                    <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">LAPTOP</span>
+                                    <div class="my-4 flex justify-center">
+                                        <img src="/Foto-Foto/asus.webp" alt="Asus ROG Zephyrus" class="h-40 object-contain rounded-xl">
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-semibold text-gray-700 px-2 line-clamp-2">Asus ROG Zephyrus G14 AMD Ryzen 7 Garansi 1 Tahun</h4>
+                                        <div class="text-sm font-bold text-red-600 mt-2">Rp 16.499.000</div>
+                                    </div>
+                                    <button class="bg-red-600 text-white font-bold text-xs py-2 rounded-full mt-3 w-20 mx-auto hover:bg-red-700 transition">Beli</button>
+                                </div>
+
+                                <div class="bg-white text-gray-800 rounded-3xl p-4 flex flex-col justify-between shadow-md text-center min-h-[380px] w-full sm:w-[calc(50%-12px)] md:w-[240px] flex-shrink-0 snap-start">
+                                    <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">SMARTPHONE</span>
+                                    <div class="my-4 flex justify-center">
+                                        <img src="/Foto-Foto/infinix.jfif" alt="Infinix Note 40" class="h-40 object-contain rounded-xl">
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-semibold text-gray-700 px-2 line-clamp-2">Infinix Note 40 Pro 5G 8/256GB Jaminan Ngebut</h4>
+                                        <div class="text-sm font-bold text-red-600 mt-2">Rp 3.199.000</div>
+                                    </div>
+                                    <button class="bg-red-600 text-white font-bold text-xs py-2 rounded-full mt-3 w-20 mx-auto hover:bg-red-700 transition">Beli</button>
+                                </div>
+
+                                <div class="bg-white text-gray-800 rounded-3xl p-4 flex flex-col justify-between shadow-md text-center min-h-[380px] w-full sm:w-[calc(50%-12px)] md:w-[240px] flex-shrink-0 snap-start">
+                                    <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">TABLET</span>
+                                    <div class="my-4 flex justify-center">
+                                        <img src="/Foto-Foto/xiaomi-pad-6-bakal-hadir-dengan-layar-144-hz-mcXmpKyocS.jpg" alt="Xiaomi Pad 6" class="h-40 object-contain rounded-xl">
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-semibold text-gray-700 px-2 line-clamp-2">Xiaomi Pad 6 Layar 144Hz Cocok Kerja & Game</h4>
+                                        <div class="text-sm font-bold text-red-600 mt-2">Rp 4.999.000</div>
+                                    </div>
+                                    <button class="bg-red-600 text-white font-bold text-xs py-2 rounded-full mt-3 w-20 mx-auto hover:bg-red-700 transition">Beli</button>
+                                </div>
+
+                                <div class="bg-white text-gray-800 rounded-3xl p-4 flex flex-col justify-between shadow-md text-center min-h-[380px] w-full sm:w-[calc(50%-12px)] md:w-[240px] flex-shrink-0 snap-start">
+                                    <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">MONITOR</span>
+                                    <div class="my-4 flex justify-center">
+                                        <img src="/Foto-Foto/monitor_acer.webp" alt="Monitor Acer Nitro" class="h-40 object-contain rounded-xl">
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-semibold text-gray-700 px-2 line-clamp-2">Acer Nitro 24 Inch Gaming IPS Monitor 165Hz</h4>
+                                        <div class="text-sm font-bold text-red-600 mt-2">Rp 1.750.000</div>
+                                    </div>
+                                    <button class="bg-red-600 text-white font-bold text-xs py-2 rounded-full mt-3 w-20 mx-auto hover:bg-red-700 transition">Beli</button>
+                                </div>
+
+                            </div>
+
+                            <button id="slideRight" onclick="scrollProduk('right')" class="absolute right-2 z-30 bg-white text-gray-800 w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition cursor-pointer">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="page-catalog" class="hidden container mx-auto px-6 py-10">
+            <h2 id="catalogTitle" class="text-3xl font-bold text-gray-900 mb-2 capitalize">Kategori Produk</h2>
+            <p class="text-gray-500 text-sm mb-8">Menampilkan produk-produk terbaik dengan garansi resmi.</p>
+            
+            <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+            <div id="emptySearchMessage" class="hidden text-center py-12 text-gray-500">
+                <i class="fa-solid fa-box-open text-4xl mb-3 block"></i>
+                Produk tidak ditemukan. Coba kata kunci lain!
+            </div>
+        </div>
+
+        <div id="page-profile" class="hidden container mx-auto px-6 py-12 max-w-4xl">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-32 h-32 bg-red-100 rounded-full flex items-center justify-center text-red-600 text-5xl font-bold shadow-inner">
+                    U
+                </div>
+                <div class="flex-grow text-center md:text-left space-y-2">
+                    <h2 class="text-2xl font-bold text-gray-900">User PC Store</h2>
+                    <p class="text-gray-500 text-sm">user@example.com · +62 812-3456-7890</p>
+                    <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full">Member Silver</span>
+                    <div class="pt-4 flex justify-center md:justify-start gap-4">
+                        <button class="bg-red-600 text-white font-semibold text-xs px-4 py-2 rounded-full hover:bg-red-700 transition">Edit Profil</button>
+                        <button class="border border-gray-200 text-gray-700 font-semibold text-xs px-4 py-2 rounded-full hover:bg-gray-50 transition">Ubah Sandi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-orders" class="hidden container mx-auto px-6 py-12 max-w-4xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Pesanan Saya</h2>
+            <div class="space-y-4">
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-md">Selesai</span>
+                        <h4 class="font-bold text-gray-800 mt-2">Infinix Note 40 Pro 5G</h4>
+                        <p class="text-xs text-gray-400">No. Invoice: INV/20240215/001</p>
+                    </div>
+                    <div class="text-left sm:text-right w-full sm:w-auto">
+                        <div class="text-sm font-bold text-gray-900">Rp 3.199.000</div>
+                        <button onclick="alert('Fitur tracking belum aktif')" class="mt-2 w-full sm:w-auto bg-gray-100 text-gray-700 font-semibold text-xs px-4 py-2 rounded-full hover:bg-gray-200 transition">Detail Transaksi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-wishlist" class="hidden container mx-auto px-6 py-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Wishlist Saya</h2>
+            <p class="text-gray-500 text-sm mb-8">Daftar produk yang kamu incar.</p>
+            <div class="text-center py-12 text-gray-400 bg-white rounded-3xl border border-dashed border-gray-200">
+                <i class="fa-solid fa-heart text-4xl mb-2 text-gray-200"></i>
+                <p class="text-sm">Wishlist kamu masih kosong.</p>
+            </div>
+        </div>
+
+        <div id="page-settings" class="hidden container mx-auto px-6 py-12 max-w-2xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Pengaturan Aplikasi</h2>
+            <div class="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-100">
+                <div class="p-4 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-semibold text-sm text-gray-800">Notifikasi WhatsApp</h4>
+                        <p class="text-xs text-gray-400">Kirim status pesanan via WhatsApp</p>
+                    </div>
+                    <input type="checkbox" checked class="w-4 h-4 accent-red-600">
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-semibold text-sm text-gray-800">Mode Gelap (Segera Hadir)</h4>
+                        <p class="text-xs text-gray-400">Ubah tampilan menjadi serba gelap</p>
+                    </div>
+                    <input type="checkbox" disabled class="w-4 h-4">
+                </div>
+            </div>
+        </div>
+
+        <div id="page-help" class="hidden container mx-auto px-6 py-12 max-w-2xl text-center">
+            <i class="fa-solid fa-circle-question text-red-600 text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Butuh Bantuan?</h2>
+            <p class="text-gray-500 text-sm mb-6">Tim Support kami siap melayani kebutuhan dan keluhan kendala teknis kamu 24/7.</p>
+            <a href="https://wa.me/6281234567890" target="_blank" class="inline-flex items-center gap-2 bg-green-500 text-white font-bold text-sm px-6 py-3 rounded-full shadow-md hover:bg-green-600 transition">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Hubungi via WhatsApp
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-[#E52521] text-white pt-6 pb-12 border-t border-white/20 mt-auto">
+        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8 items-start">
+            <div onclick="navigateTo('home')" class="flex items-center space-x-2 font-extrabold text-xl tracking-wider text-white cursor-pointer">
+                <span class="border-2 border-white px-1.5 py-0.5 rounded-md bg-white text-red-600">PC</span>
+                <span>STORE</span>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-sm mb-3 text-red-100">Akun Dan Kontak</h4>
+                <ul class="space-y-2 text-xs opacity-90">
+                    <li><button onclick="navigateTo('profil')" class="hover:underline text-left">Masuk / Daftar</button></li>
+                    <li><button onclick="navigateTo('help')" class="hover:underline text-left">Lokasi Toko</button></li>
+                    <li><button onclick="navigateTo('help')" class="hover:underline text-left">Kontak Kami</button></li>
+                </ul>
+            </div>
+
+            <div class="space-y-2 pt-2">
+                <div class="h-1 bg-white/40 w-full rounded"></div>
+                <div class="h-1 bg-white/40 w-3/4 rounded"></div>
+                <div class="h-1 bg-white/40 w-1/2 rounded"></div>
+                <div class="h-1 bg-white/40 w-1/4 rounded"></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const productsData = {
+            desktop: [
+                { name: "PC Gaming Ryzen 5 5600G Ultra Setup", price: "Rp 6.450.000", tag: "DESKTOP", img: "/Foto-Foto/ryzen_5.webp" },
+                { name: "PC Rakitan Intel Core i7 Professional", price: "Rp 11.200.000", tag: "DESKTOP", img: "/Foto-Foto/pc_rakitan_i7.jpg" },
+                { name: "PC Office Slim Intel Core i3 Hemat Daya", price: "Rp 3.899.000", tag: "DESKTOP", img: "/Foto-foto/slim.webp" },
+                { name: "Asus ROG Strix G35 Gaming Desktop Beast", price: "Rp 24.500.000", tag: "DESKTOP", img: "/Foto-Foto/asus_rog_pc.webp" }
+            ],
+            laptop: [
+                { name: "Asus ROG Zephyrus G14 AMD Ryzen 7", price: "Rp 16.499.000", tag: "LAPTOP", img: "/Foto-Foto/asus.webp" },
+                { name: "Lenovo IdeaPad Slim 3 Ryzen 5 Gen 8", price: "Rp 7.299.000", tag: "LAPTOP", img: "/foto-foto/ideapad.webp" },
+                { name: "Acer Aspire 5 Intel Core i5 Slim Design", price: "Rp 8.150.000", tag: "LAPTOP", img: "/foto-foto/acer_aspire.webp" },
+                { name: "MacBook Air M2 8/256GB Retina Display", price: "Rp 15.999.000", tag: "LAPTOP", img: "/foto-foto/Mc.webp" }
+            ],
+            hp: [
+                { name: "Infinix Note 40 Pro 5G 8/256GB Super Fast", price: "Rp 3.199.000", tag: "SMARTPHONE", img: "/foto-foto/infinix.jfif" },
+                { name: "Xiaomi Pad 6 Layar 144Hz WQHD+", price: "Rp 4.999.000", tag: "TABLET", img: "/foto-foto/xiaomi-pad-6-bakal-hadir-dengan-layar-144-hz-mcXmpKyocS.jpg" },
+                { name: "Tecno Pova 6 Pro 5G Monster Battery", price: "Rp 2.850.000", tag: "SMARTPHONE", img: "/foto-foto/tecno-pova-6-pro-smartphone.jpg" },
+                { name: "Samsung Galaxy S24 Ultra 12/512GB AI", price: "Rp 19.450.000", tag: "SMARTPHONE", img: "/foto-foto/samsung.webp" }
+            ],
+            aksesoris: [
+                { name: "Acer Nitro 24 Inch Gaming IPS 165Hz", price: "Rp 1.750.000", tag: "MONITOR", img: "/foto-foto/monitor_acer.webp" },
+                { name: "Mechanical Keyboard RGB Gateron Switch", price: "Rp 540.000", tag: "AKSESORIS", img: "/foto-foto/mecha.webp" },
+                { name: "Gaming Mouse Wireless Superlight 24K DPI", price: "Rp 820.000", tag: "AKSESORIS", img: "/foto-foto/mouse.webp" },
+                { name: "Headset Gaming 7.1 Surround Sound Bass", price: "Rp 450.000", tag: "AKSESORIS", img: "/foto-foto/headset.webp" }
+            ]
+        };
+
+        let currentActiveCategory = 'home';
+
+        function openSidebar() {
+            document.getElementById('sidebar').style.transform = 'translateX(0)';
+            document.getElementById('sidebarOverlay').style.opacity = '1';
+            document.getElementById('sidebarOverlay').style.pointerEvents = 'auto';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').style.transform = 'translateX(100%)';
+            document.getElementById('sidebarOverlay').style.opacity = '0';
+            document.getElementById('sidebarOverlay').style.pointerEvents = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function scrollProduk(direction) {
+            const container = document.getElementById('produkContainer');
+            const scrollAmount = 260; 
+            if (direction === 'left') {
+                container.scrollLeft -= scrollAmount;
+            } else {
+                container.scrollLeft += scrollAmount;
+            }
+        }
+
+        function navigateTo(pageKey) {
+            currentActiveCategory = pageKey;
+            
+            document.getElementById('desktopSearch').value = '';
+            document.getElementById('mobileSearch').value = '';
+
+            const pages = ['home', 'catalog', 'profile', 'orders', 'wishlist', 'settings', 'help'];
+            pages.forEach(p => {
+                const el = document.getElementById(`page-${p}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (['desktop', 'laptop', 'hp', 'aksesoris'].includes(pageKey)) {
+                document.getElementById('page-catalog').classList.remove('hidden');
+                renderCatalog(pageKey);
+            } else {
+                const targetPage = document.getElementById(`page-${pageKey}`);
+                if (targetPage) targetPage.classList.remove('hidden');
+            }
+        }
+
+        function renderCatalog(category, filterKeyword = '') {
+            const grid = document.getElementById('catalogGrid');
+            const title = document.getElementById('catalogTitle');
+            const emptyMsg = document.getElementById('emptySearchMessage');
+            grid.innerHTML = '';
+
+            let titleText = category;
+            if (category === 'hp') titleText = 'HP & Tablet';
+            title.innerText = `Kategori ${titleText}`;
+
+            let listProduk = productsData[category] || [];
+
+            if (filterKeyword.trim() !== '') {
+                listProduk = listProduk.filter(p => p.name.toLowerCase().includes(filterKeyword.toLowerCase()));
+            }
+
+            if (listProduk.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                return;
+            } else {
+                emptyMsg.classList.add('hidden');
+            }
+
+            listProduk.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white text-gray-800 rounded-3xl p-4 flex flex-col justify-between shadow-sm border border-gray-100 text-center min-h-[360px]";
+                card.innerHTML = `
+                    <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">${p.tag}</span>
+                    <div class="my-4 flex justify-center">
+                        <img src="${p.img}" alt="${p.name}" class="h-40 object-contain rounded-xl">
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold text-gray-700 px-2 line-clamp-2">${p.name}</h4>
+                        <div class="text-sm font-bold text-red-600 mt-2">${p.price}</div>
+                    </div>
+                    <button onclick="alert('Produk dimasukkan keranjang!')" class="bg-red-600 text-white font-bold text-xs py-2 rounded-full mt-3 w-24 mx-auto hover:bg-red-700 transition">Beli</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function handleSearch(keyword) {
+            if (!['desktop', 'laptop', 'hp', 'aksesoris'].includes(currentActiveCategory)) {
+                navigateTo('desktop');
+            }
+            renderCatalog(currentActiveCategory, keyword);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSidebar();
+        });
+    </script>
+</body>
+</html>
